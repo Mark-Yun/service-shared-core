@@ -1,0 +1,37 @@
+  scalar JSON
+
+  # 토픽 모델
+  type Topic {
+    _id: ID!
+    name(language: String!): String!
+    description(language: String): String
+    parentTopic: Topic
+    childTopics: [Topic]
+    tags: [String]
+    createdAt: String!
+  }
+
+  # 토픽 쿼리
+  type Query {
+    getTopicById(id: ID!): Topic
+    getTopicsByParent(parentId: ID!): [Topic]
+    getTopicsByTags(tags: [String!], limit: Int, skip: Int): [Topic]
+  }
+
+  # 토픽 뮤테이션
+  type Mutation {
+    createTopic(
+      name: JSON!
+      description: JSON
+      parentTopicId: ID
+      tags: [String!]
+    ): Topic
+    updateTopic(
+      id: ID!
+      name: JSON
+      description: JSON
+      parentTopicId: ID
+      tags: [String]
+    ): Topic
+    deleteTopic(id: ID!): Boolean
+  }

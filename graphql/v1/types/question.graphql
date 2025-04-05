@@ -1,0 +1,47 @@
+  scalar JSON
+
+  # 문제 유형 (객관식, 주관식)
+  enum QuestionType {
+    "multiple-choice"
+    "open-ended"
+  }
+
+  # 문제 모델
+  type Question {
+    _id: ID!
+    text(language: String!): String!
+    answer(language: String!): String!
+    options(language: String!): [String]!
+    type: QuestionType!
+    difficulty: Int!
+    createdAt: String!
+    tags: [String]!
+  }
+
+  # 문제 쿼리
+  type Query {
+    getQuestionById(id: ID!): Question
+    getQuestionsByTags(tags: [String!], limit: Int, skip: Int): [Question]
+  }
+
+  # 문제 뮤테이션
+  type Mutation {
+    createQuestion(
+      text: JSON!
+      answer: JSON!
+      options: [JSON]!
+      type: QuestionType!
+      difficulty: Int!
+      tags: [String!]
+    ): Question
+    updateQuestion(
+      id: ID!
+      text: JSON
+      answer: JSON
+      options: [JSON]
+      type: QuestionType
+      difficulty: Int
+      tags: [String]
+    ): Question
+    deleteQuestion(id: ID!): Boolean
+  }
