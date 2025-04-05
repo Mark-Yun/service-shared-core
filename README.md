@@ -1,0 +1,1 @@
+# service-shared-core
