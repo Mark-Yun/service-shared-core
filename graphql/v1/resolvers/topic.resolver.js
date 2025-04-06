@@ -1,5 +1,5 @@
 // models/graphql/TopicResolvers.js
-import Topic from '../../../models/Topic';
+import Topic from '@models/Topic.js';
 
 export const resolvers = {
     Query: {

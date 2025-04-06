@@ -1,10 +1,6 @@
 import { jest } from '@jest/globals';
-import { resolvers } from './topic.resolver.js';
-import * as TopicModule from '../../../models/Topic.js'; // 바꿔야 함
 
-const mockConstructor = jest.fn();
-
-jest.mock('../../../models/Topic.js', () => ({
+jest.mock('@models/Topic.js', () => ({
     __esModule: true,
     default: Object.assign(jest.fn(), {
         findById: jest.fn(),
@@ -13,15 +9,19 @@ jest.mock('../../../models/Topic.js', () => ({
     }),
 }));
 
+import Topic from '@models/Topic.js';
+import { resolvers } from '@graphql/v1/resolvers/topic.resolver.js';
+const mockConstructor = jest.fn();
+
 describe('Topic Resolvers', () => {
     describe('Query.getTopicById', () => {
         it('should return a topic by ID', async () => {
             const mockTopic = { _id: '1', name: 'Test Topic' };
-            TopicModule.default.findById.mockResolvedValue(mockTopic);
+            Topic.findById.mockResolvedValue(mockTopic);
 
             const result = await resolvers.Query.getTopicById(null, { id: '1' });
 
-            expect(TopicModule.default.findById).toHaveBeenCalledWith('1');
+            expect(Topic.findById).toHaveBeenCalledWith('1');
             expect(result).toEqual(mockTopic);
         });
     });
@@ -32,11 +32,11 @@ describe('Topic Resolvers', () => {
                 { _id: '1', name: 'Child Topic 1' },
                 { _id: '2', name: 'Child Topic 2' },
             ];
-            TopicModule.default.find.mockResolvedValue(mockTopics);
+            Topic.find.mockResolvedValue(mockTopics);
 
             const result = await resolvers.Query.getTopicsByParent(null, { parentId: '123' });
 
-            expect(TopicModule.default.find).toHaveBeenCalledWith({ parentTopic: '123' });
+            expect(Topic.find).toHaveBeenCalledWith({ parentTopic: '123' });
             expect(result).toEqual(mockTopics);
         });
     });
@@ -53,7 +53,7 @@ describe('Topic Resolvers', () => {
                 save: mockSave,
             };
 
-            TopicModule.default.mockImplementation(() => mockTopicInstance);
+            Topic.mockImplementation(() => mockTopicInstance);
             mockSave.mockResolvedValue(mockTopicInstance);
 
             const result = await resolvers.Mutation.createTopic(null, {
@@ -69,11 +69,11 @@ describe('Topic Resolvers', () => {
 
     describe('Mutation.deleteTopic', () => {
         it('should delete a topic by ID', async () => {
-            TopicModule.default.findByIdAndDelete.mockResolvedValue(true);
+            Topic.findByIdAndDelete.mockResolvedValue(true);
 
             const result = await resolvers.Mutation.deleteTopic(null, { id: '1' });
 
-            expect(TopicModule.default.findByIdAndDelete).toHaveBeenCalledWith('1');
+            expect(Topic.findByIdAndDelete).toHaveBeenCalledWith('1');
             expect(result).toBe(true);
         });
     });

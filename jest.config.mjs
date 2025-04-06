@@ -91,6 +91,13 @@ const config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
+    // 1)  @models/Topic.js  →  <rootDir>/../service-shared-core/models/Topic.js
+    '^@models/(.*)\\.js$':
+      '<rootDir>/models/$1.js',
+
+    // 2)  @graphql/v1/resolvers/foo.js  →  <rootDir>/src/graphql/v1/resolvers/foo.js
+    '^@graphql/(.*)\\.js$':
+      '<rootDir>/graphql/$1.js',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -127,9 +134,9 @@ const config = {
   // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
+  roots: [
+    "<rootDir>/tests"
+  ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
