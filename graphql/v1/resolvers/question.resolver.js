@@ -1,5 +1,5 @@
 // models/graphql/QuestionResolvers.js
-import Question from '@models/Question.js';
+import Question from '../../../models/Question.js';
 
 export const resolvers = {
     Query: {
